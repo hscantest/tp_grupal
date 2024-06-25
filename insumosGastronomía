@@ -1,0 +1,49 @@
+'''
+=============================
+Recetario Insumos Gastronomía
+=============================
+Autores: Alelí Guazzora, Melany Ávila, Florencia Zagaglia, Hernán Scandizzo  
+fecha: 2024
+version: 1.0
+'''
+
+import os #importo OS para fn cls
+import colorama  #importo Colorama para dar colores al menú
+
+listaPlatos= ("nombre", "unidadMedida", "cantidad")
+
+def limpiarPantalla():
+    '''
+    Despeja la consola.  No espera parámetros ni tiene retorno. 
+    Autor: Sergio Serbluk (Clase)
+    '''
+    os.system('cls' if os.name=='nt' else 'clear')  #define la accion para Windows y Mac
+    return
+def menu (): 
+    """Retorna opción seleccionada por el usuario"""
+
+    
+limpiarPantalla()
+print("*"*60)
+print( "       " + colorama.Back.GREEN +"INSUMOS NECESARIOS PARA PLATOS DE LA EMPRESA".center(30)+colorama.Back.RESET)
+print("*"*60)
+print ()
+
+    
+print("\t1 - AGREGAR PLATO ")
+print("\t2 - BUSCAR PLATO ")
+print("\t3 - LISTA DE PLATOS ")
+print("")
+print("\t4 - MODIFICAR PLATO ")
+print("\t5 - ELIMINAR PLATO ")
+print("")
+print("\t6 - CALCULAR INSUMOS EVENTO ")
+print("\t7 - SALIR ")
+print ("") 
+opcion=int(input("Ingrese el numero de opción deseada: " ))
+
+
+#PROGRAMA PRINCIPAL
+
+
+         
