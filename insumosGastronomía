@@ -7,43 +7,84 @@ fecha: 2024
 version: 1.0
 '''
 
-import os #importo OS para fn cls
-import colorama  #importo Colorama para dar colores al menú
 
-listaPlatos= ("nombre", "unidadMedida", "cantidad")
-
+import os  #importo libreria 
 def limpiarPantalla():
-    '''
-    Despeja la consola.  No espera parámetros ni tiene retorno. 
-    Autor: Sergio Serbluk (Clase)
-    '''
-    os.system('cls' if os.name=='nt' else 'clear')  #define la accion para Windows y Mac
+    os.system("cls" if os.name=="nt" else "clear")
     return
-def menu (): 
-    """Retorna opción seleccionada por el usuario"""
+def MenuPrincipal(): 
+    print ("Gestión de Establecimiento Gastronómico".center (60, " "))
+    print ("*"*60)
+    print ("LISTADO DE INSUMOS PARA PREPARACION DE PLATOS".center (60, " "))
+    print (" ")
+    print ("Esta guía de insumos brinda información estandarizada de cantidad necesarias para preparación de platos. ")
+    print ("No modificar cantidades sin autorización de Supervisor")
+    print ("="*60)
+    print ("1. Platos y Recetas")
+    print ("2. Salir")
+    op=input ("Seleccione una opción:  ")
+    return op
 
+def menuRecetas():  #Funcion Menú Recetas trabajada aparte y pegada.  Va en OPCION 1 De Menú Principal
+    while True: 
+        limpiarPantalla()
+        print("Menú de Recetas".center (60, " "))
+        print("="*60)
+        print ("1. Ingreso nueva Receta")
+        print ("2. Modificar Receta")
+        print ("3. Eliminar Receta")
+        print ("4. Listar Receta")
+        print ("5. salir")
+        op = input ("Seleccione una opción:  ")
+        if op == "1":
+            ingresoReceta(listaRecetas)
+        elif op == "2":
+            pass
+        elif op == "3":
+            pass
+        elif op == "4":
+            pass
+        elif op == "5":
+            break  #Sale de SubMenú menúRecetas y vuelve a Menú Principal
+        else: 
+            print ("opcion incorrecta")
+            input ("presione enter para continuar...")
+    return
+
+#Función para ingresar nueva Receta
+def ingresoReceta(lista=[]):  #en el programa general se genera una lista. 
+    nomplato=input("Ingrese el nombre del Plato: ")
+    ingredientes=[]  #crea la lista Vacía
+
+    lista.append({
+        "Nombre Plato":nomplato,  #defino par clave valor
+        "Ingredientes":ingredientes
+    })
+    print (lista)
+
+    print("Se agregó una Receta Correctamente!") 
+    print (" ")
+    print (lista)
+    print("enter para continuar...")
     
-limpiarPantalla()
-print("*"*60)
-print( "       " + colorama.Back.GREEN +"INSUMOS NECESARIOS PARA PLATOS DE LA EMPRESA".center(30)+colorama.Back.RESET)
-print("*"*60)
-print ()
-
     
-print("\t1 - AGREGAR PLATO ")
-print("\t2 - BUSCAR PLATO ")
-print("\t3 - LISTA DE PLATOS ")
-print("")
-print("\t4 - MODIFICAR PLATO ")
-print("\t5 - ELIMINAR PLATO ")
-print("")
-print("\t6 - CALCULAR INSUMOS EVENTO ")
-print("\t7 - SALIR ")
-print ("") 
-opcion=int(input("Ingrese el numero de opción deseada: " ))
+    
+    
 
+listaRecetas=[]
 
-#PROGRAMA PRINCIPAL
-
-
-         
+#programa principal
+while True:  #Repetimos la estructura hasta que el usuario fuerce la salida (break)
+    limpiarPantalla()
+    op=MenuPrincipal()
+    if op=="1":
+        menuRecetas()  #llama a menu platos y recetas
+    elif op=="2":
+        respuesta=input ("Está abandonando el programa. ¿Confirma? s/n: ")
+        if respuesta.lower()=="s":
+            break #sale del while.   
+    #también 
+    else: 
+        print ("La opción seleccionada no es válida")
+        print ("presione enter para continuar")
+print ("Gracias por usar el programa!")
