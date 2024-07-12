@@ -40,7 +40,7 @@ def menuRecetas():
         print("Menú de Recetas".center(60, " "))
         print("=" * 60)
         print("1. Ingreso nueva Receta")
-        print("2. Modificar Receta")
+        print("2. Ver/Modificar Receta")
         print("3. Eliminar Receta")
         print("4. Listar Receta")
         print("5. Salir")
