@@ -1,90 +1,215 @@
 '''
-=============================
-Recetario Insumos Gastronomía
-=============================
+===============================
+GESTION DE RECETAS GASTRONOMIA
+===============================
 Autores: Alelí Guazzora, Melany Ávila, Florencia Zagaglia, Hernán Scandizzo  
 fecha: 2024
 version: 1.0
 '''
 
 
-import os  #importo libreria 
+import os
+import colorama
+
+# Función para limpiar la pantalla según el sistema operativo
 def limpiarPantalla():
-    os.system("cls" if os.name=="nt" else "clear")
+    os.system("cls" if os.name == "nt" else "clear")
     return
-def MenuPrincipal(): 
-    print ("Gestión de Establecimiento Gastronómico".center (60, " "))
-    print ("*"*60)
-    print ("LISTADO DE INSUMOS PARA PREPARACION DE PLATOS".center (60, " "))
-    print (" ")
-    print ("Esta guía de insumos brinda información estandarizada de cantidad necesarias para preparación de platos. ")
-    print ("No modificar cantidades sin autorización de Supervisor")
-    print ("="*60)
-    print ("1. Platos y Recetas")
-    print ("2. Salir")
-    op=input ("Seleccione una opción:  ")
+
+# Menú principal del programa
+
+def MenuPrincipal():
+    print("*" * 60)
+    print("Gestión de Establecimiento Gastronómico".center(60, " "))
+    print("*" * 60)
+    print("LISTADO DE INSUMOS PARA PREPARACION DE PLATOS".center(60, " "))
+    print(" ")
+    print("Esta guía de insumos brinda información estandarizada de cantidad necesarias para preparación de platos. ")
+    print("No modificar cantidades sin autorización de Supervisor")
+    print("=" * 60)
+    print("1. Platos y Recetas")
+    print("2. Salir")
+    print(" ")
+    op = input("Seleccione una opción:  ")
     return op
 
-def menuRecetas():  #Funcion Menú Recetas trabajada aparte y pegada.  Va en OPCION 1 De Menú Principal
-    while True: 
+# Menú de recetas
+def menuRecetas():
+    while True:
         limpiarPantalla()
-        print("Menú de Recetas".center (60, " "))
-        print("="*60)
-        print ("1. Ingreso nueva Receta")
-        print ("2. Modificar Receta")
-        print ("3. Eliminar Receta")
-        print ("4. Listar Receta")
-        print ("5. salir")
-        op = input ("Seleccione una opción:  ")
+        print("Menú de Recetas".center(60, " "))
+        print("=" * 60)
+        print("1. Ingreso nueva Receta")
+        print("2. Modificar Receta")
+        print("3. Eliminar Receta")
+        print("4. Listar Receta")
+        print("5. Salir")
+        op = input("Seleccione una opción:  ")
         if op == "1":
             ingresoReceta(listaRecetas)
         elif op == "2":
-            pass
+            modificarReceta(listaRecetas)
         elif op == "3":
-            pass
+            eliminarReceta(listaRecetas)
         elif op == "4":
-            pass
+            listarRecetas(listaRecetas)
         elif op == "5":
-            break  #Sale de SubMenú menúRecetas y vuelve a Menú Principal
-        else: 
-            print ("opcion incorrecta")
-            input ("presione enter para continuar...")
+            break  # Sale de SubMenú menúRecetas y vuelve a Menú Principal
+        else:
+            print("Opción incorrecta")
+            input("Presione enter para continuar...")
     return
 
-#Función para ingresar nueva Receta
-def ingresoReceta(lista=[]):  #en el programa general se genera una lista. 
-    nomplato=input("Ingrese el nombre del Plato: ")
-    ingredientes=[]  #crea la lista Vacía
-
+# Función para ingresar una nueva receta
+def ingresoReceta(lista):
+    nomplato = input("Ingrese el nombre del Plato: ")
+    ingredientes = {}  # crea el diccionario vacío
+    while True:
+        ingrediente = input("Ingrese un ingrediente: ")
+        cantidad = input("Ingrese la cantidad del ingrediente: ")
+        ingredientes[ingrediente] = cantidad
+        continuar = input("¿Desea agregar otro ingrediente? (1 para agregar otro, enter para terminar): ")
+        if continuar != "1":
+            break
     lista.append({
-        "Nombre Plato":nomplato,  #defino par clave valor
-        "Ingredientes":ingredientes
+        "Nombre Plato": nomplato,  # defino par clave valor
+        "Ingredientes": ingredientes
     })
-    print (lista)
+    print("Se agregó una Receta Correctamente!")
+    input("Presione enter para continuar...")
 
-    print("Se agregó una Receta Correctamente!") 
-    print (" ")
-    print (lista)
-    print("enter para continuar...")
-    
-    
-    
-    
+# Función para modificar una receta existente
+def modificarReceta(lista):
+    listarRecetas(lista)
+    try:
+        opcion = int(input("Seleccione el número del plato que desea modificar: "))
+        if 1 <= opcion <= len(lista):
+            receta = lista[opcion - 1]
+            ingredientes = receta["Ingredientes"]
+            print("\nIngredientes de", receta["Nombre Plato"])
+            for i, (ingrediente, cantidad) in enumerate(ingredientes.items(), 1):
+                print(f"{i}. {ingrediente} - {cantidad}")
+            ing_opcion = int(input("Seleccione el número del ingrediente que desea modificar (0 para agregar uno nuevo): "))
+            if 0 <= ing_opcion <= len(ingredientes):
+                if ing_opcion == 0:
+                    agregarIngrediente(ingredientes)
+                else:
+                    ing_nombre = list(ingredientes.keys())[ing_opcion - 1]
+                    nueva_cantidad = input(f"Ingrese la nueva cantidad para {ing_nombre}: ")
+                    ingredientes[ing_nombre] = nueva_cantidad
+                    print("Ingrediente modificado correctamente!")
+            else:
+                print("Opción de ingrediente no válida.")
+        else:
+            print("Opción de plato no válida.")
+    except ValueError:
+        print("Entrada no válida.")
+    input("Presione enter para continuar...")
 
-listaRecetas=[]
+# Función para agregar un ingrediente a una receta existente
+def agregarIngrediente(ingredientes):
+    nombre = input("Ingrese el nombre del nuevo ingrediente: ")
+    cantidad = input("Ingrese la cantidad del nuevo ingrediente: ")
+    ingredientes[nombre] = cantidad
 
-#programa principal
-while True:  #Repetimos la estructura hasta que el usuario fuerce la salida (break)
+# Función para eliminar una receta existente
+def eliminarReceta(lista):
+    listarRecetas(lista)
+    try:
+        opcion = int(input("Seleccione el número del plato que desea eliminar: "))
+        if 1 <= opcion <= len(lista):
+            lista.pop(opcion - 1)
+            print("Receta eliminada correctamente!")
+        else:
+            print("Opción no válida.")
+    except ValueError:
+        print("Entrada no válida.")
+    input("Presione enter para continuar...")
+
+# Función para listar las recetas
+def listarRecetas(lista):
+    if lista:
+        print("\nRecetas Disponibles:\n")
+        for i, receta in enumerate(lista, 1):
+            print(f"{i}. {receta['Nombre Plato']}")
+    else:
+        print("No hay recetas disponibles.")
+    input("Presione enter para continuar...")
+
+# Lista de recetas inicial
+listaRecetas = [
+    {
+        "Nombre Plato": "Milhojas de papa",
+        "Ingredientes": {
+            "Papa": "250 gr",
+            "Crema": "50 cc",
+            "Sal": "5 gr",
+            "Pimienta": "5 gr",
+            "Huevo": "100 gr (dos huevos)",
+            "Nuez moscada": "5 gr",
+            "Manteca": "100 gr"
+        }
+    },
+    {
+        "Nombre Plato": "Omelette relleno con papas",
+        "Ingredientes": {
+            "Queso mantecoso": "150 gr",
+            "Tomate": "150 gr (un tomate)",
+            "Sal": "5 gr",
+            "Pimienta": "5 gr",
+            "Albahaca": "5 gr",
+            "Aceite": "50 cc"
+        }
+    },
+    {
+        "Nombre Plato": "Carne con papas y ensalada",
+        "Ingredientes": {
+            "Carne": "150 gr",
+            "Papa": "150 gr",
+            "Tomate": "150 gr (un tomate)",
+            "Orégano": "5 gr",
+            "Sal": "5 gr",
+            "Aceite": "50 cc"
+        }
+    },
+    {
+        "Nombre Plato": "Ñoquis con salsa",
+        "Ingredientes": {
+            "Salsa de tomate": "200 gr",
+            "Ajo": "5 gr (un diente de ajo)",
+            "Vino": "50 cc",
+            "Papa": "200 gr",
+            "Queso rallado": "80 gr",
+            "Aceite": "50 cc",
+            "Harina": "100 gr",
+            "Huevo": "50 gr (un huevo)"
+        }
+    },
+    {
+        "Nombre Plato": "Bombas de papa rellenas",
+        "Ingredientes": {
+            "Cebolla": "80 gr (media cebolla)",
+            "Papa": "300 gr",
+            "Tomate": "150 gr (un tomate)",
+            "Huevo": "50 gr (un huevo)",
+            "Harina": "90 gr",
+            "Pan rallado": "100 gr",
+            "Aceite": "300 gr (para freír)"
+        }
+    }
+]
+
+# Programa principal
+while True:
     limpiarPantalla()
-    op=MenuPrincipal()
-    if op=="1":
-        menuRecetas()  #llama a menu platos y recetas
-    elif op=="2":
-        respuesta=input ("Está abandonando el programa. ¿Confirma? s/n: ")
-        if respuesta.lower()=="s":
-            break #sale del while.   
-    #también 
-    else: 
-        print ("La opción seleccionada no es válida")
-        print ("presione enter para continuar")
-print ("Gracias por usar el programa!")
+    op = MenuPrincipal()
+    if op == "1":
+        menuRecetas()  # llama a menu platos y recetas
+    elif op == "2":
+        respuesta = input("Está abandonando el programa. ¿Confirma? s/n: ")
+        if respuesta.lower() == "s":
+            break  # sale del while.
+    else:
+        print("La opción seleccionada no es válida")
+        input("Presione enter para continuar")
+print("Gracias por usar el Recetario!")
